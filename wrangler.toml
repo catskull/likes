@@ -8,6 +8,10 @@ binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "prod-d1-tutorial"
 database_id = "1113e3cf-fd6f-4069-97de-22f8cd362b39"
 
+routes = [
+	{ pattern = "likes.catskull.net/*", zone_name = "catskull.net", custom_domain = true }
+]
+
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables

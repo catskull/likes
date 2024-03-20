@@ -13,9 +13,9 @@ app.get('*', async (c) => {
   c.header('Content-Type', 'image/svg+xml')
   c.header('Cache-control', 'no-cache')
   c.header('Access-Control-Allow-Origin', '*')
-  if (c.req.header('Referer')) {
+  if (true || c.req.header('Referer')) {
     try {
-      const source = c.req.header('Referer')?.replace(/\/+$/, '')
+      const source = c.req.header('Referer')?.replace(/\/+$/, '') ?? 'default'
 
       await c.env.DB.prepare("INSERT OR IGNORE INTO Likes (SourceName, SourceLikes) VALUES (?, 1)")
         .bind(source).run()
@@ -27,7 +27,8 @@ app.get('*', async (c) => {
 
       const svg = `
   			<svg xmlns="http://www.w3.org/2000/svg" height="24" width="${textWidth}">
-  			  <text id="likesText" x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
+          <rect width="100%" height="100%" fill="white"></rect>
+  			  <text x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
   			</svg>
   		`
       return c.body(svg)
@@ -37,9 +38,10 @@ app.get('*', async (c) => {
       const text = `500 Likes`
       const textWidth = text.length * 8;
       const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" width="${textWidth}">
-          <text id="likesText" x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
-        </s
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="${textWidth}">
+          <rect width="100%" height="100%" fill="white"></rect>
+          <text x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
+        </svg>
       `
       return c.body(svg)
     }
@@ -57,7 +59,7 @@ app.get('*', async (c) => {
         <img style='cursor: pointer;'
           src='${c.req.url}'
           onclick="fetch('${c.req.url}', {method:'POST'}).then(()=>this.src='${c.req.url}'.split('?')[0]+'?t='+Date.now())"
-          onmouseover="this.src='data:image/svg+xml;base64,CiAgCQkJPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHdpZHRoPSI1NiI+CiAgCQkJICA8dGV4dCBpZD0ibGlrZXNUZXh0IiB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfkY0gTGlrZTwvdGV4dD4KICAJCQk8L3N2Zz4KICAJCQ=='"
+          onmouseover="this.src='data:image/svg+xml;base64,CiAgCQkJPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHdpZHRoPSI2NCI+CiAgICAgICAgICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ3aGl0ZSI+PC9yZWN0PgogIAkJCSAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5GNIExpa2UhPC90ZXh0PgogIAkJCTwvc3ZnPgogIAkJ'"
           onmouseout="this.src='${c.req.url}?t=0'"
         >
       `)
@@ -71,7 +73,7 @@ app.post('*', async (c) => {
   c.header('Cache-control', 'no-cache')
   c.header('Access-Control-Allow-Origin', '*')
   try {
-  	const source = c.req.header('Referer')?.replace(/\/+$/, '')?.replace(/\/+$/, '') ?? 'default'
+  	const source = c.req.header('Referer')?.replace(/\/+$/, '') ?? 'default'
 
   	c.env.DB.prepare("INSERT OR REPLACE INTO Likes (SourceName, SourceLikes) VALUES (?, COALESCE((SELECT SourceLikes + 1 FROM Likes WHERE SourceName = ?), 2))")
 		.bind(source, source).run()
@@ -83,7 +85,8 @@ app.post('*', async (c) => {
 
     const svg = `
       <svg xmlns="http://www.w3.org/2000/svg" height="24" width="${textWidth}">
-        <text id="likesText" x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
+        <rect width="100%" height="100%" fill="white"></rect>
+        <text x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
       </svg>
     `
     return c.body(svg)
@@ -94,8 +97,9 @@ app.post('*', async (c) => {
     const textWidth = text.length * 8;
     const svg = `
       <svg xmlns="http://www.w3.org/2000/svg" height="24" width="${textWidth}">
-        <text id="likesText" x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
-      </s
+        <rect width="100%" height="100%" fill="white"></rect>
+        <text x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
+      </svg>
     `
     return c.body(svg)
   }
