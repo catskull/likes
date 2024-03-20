@@ -15,7 +15,6 @@ app.get('*', async (c) => {
   c.header('Cache-control', 'no-cache')
   c.header('Access-Control-Allow-Origin', '*')
   try {
-    console.log(c.req.header('Referer'))
     const source = c.req.header('Referer')?.replace(/\/+$/, '') ?? 'default'
     console.log(source)
 
@@ -57,6 +56,7 @@ app.post('*', async (c) => {
   c.header('Access-Control-Allow-Origin', '*')
   try {
   	const source = c.req.header('Referer')?.replace(/\/+$/, '') ?? 'default'
+    console.log(source)
 
   	await c.env.DB.prepare("INSERT OR REPLACE INTO Likes (SourceName, SourceLikes) VALUES (?, COALESCE((SELECT SourceLikes + 1 FROM Likes WHERE SourceName = ?), 2))")
 		.bind(source, source).run()
