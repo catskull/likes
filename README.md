@@ -1,5 +1,5 @@
 # 👍 Likes
-A social network in a single HTML tag
+A decentralized social network in a single HTML tag
 
 More info: https://likes.catskull.net
 
