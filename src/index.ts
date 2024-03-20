@@ -26,7 +26,7 @@ app.get('*', async (c) => {
       const textWidth = text.length * 8;
 
       const svg = `
-  			<svg xmlns="http://www.w3.org/2000/svg" height="20" width="${textWidth}">
+  			<svg xmlns="http://www.w3.org/2000/svg" height="24" width="${textWidth}">
   			  <text id="likesText" x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
   			</svg>
   		`
@@ -46,7 +46,20 @@ app.get('*', async (c) => {
   } else {
     // no referer = browser viewing the page?
     return c.html(`
-        <img style='cursor: pointer;' src='${c.req.url}' onclick="fetch(this.src, {method:'POST'}).then(()=>this.src=this.src.split('?')[0]+'?t='+Date.now())">
+<!-- HTML generated using hilite.me --><div style="background: #f0f3f3; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #330099; font-weight: bold">&lt;img</span> <span style="color: #330099">style=</span><span style="color: #CC3300">&#39;cursor: pointer;&#39;</span>
+  <span style="color: #330099">src=</span><span style="color: #CC3300">&#39;${c.req.url}&#39;</span>
+  <span style="color: #330099">onclick=</span><span style="color: #CC3300">&quot;fetch(&#39;${c.req.url}&#39;, {method:&#39;POST&#39;}).then(()=&gt;this.src=&#39;${c.req.url}&#39;.split(&#39;?&#39;)[0]+&#39;?t=&#39;+Date.now())&quot;</span>
+  <span style="color: #330099">onmouseover=</span><span style="color: #CC3300">&quot;this.src=&#39;data:image/svg+xml;base64,CiAgCQkJPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHdpZHRoPSI1NiI+CiAgCQkJICA8dGV4dCBpZD0ibGlrZXNUZXh0IiB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfkY0gTGlrZTwvdGV4dD4KICAJCQk8L3N2Zz4KICAJCQ==&#39;&quot;</span>
+  <span style="color: #330099">onmouseout=</span><span style="color: #CC3300">&quot;this.src=&#39;${c.req.url}?t=0&#39;&quot;</span>
+<span style="color: #330099; font-weight: bold">&gt;</span>
+</pre></div>
+      
+        <img style='cursor: pointer;'
+          src='${c.req.url}'
+          onclick="fetch('${c.req.url}', {method:'POST'}).then(()=>this.src='${c.req.url}'.split('?')[0]+'?t='+Date.now())"
+          onmouseover="this.src='data:image/svg+xml;base64,CiAgCQkJPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHdpZHRoPSI1NiI+CiAgCQkJICA8dGV4dCBpZD0ibGlrZXNUZXh0IiB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfkY0gTGlrZTwvdGV4dD4KICAJCQk8L3N2Zz4KICAJCQ=='"
+          onmouseout="this.src='${c.req.url}?t=0'"
+        >
       `)
   }
 })
@@ -69,7 +82,7 @@ app.post('*', async (c) => {
     const textWidth = text.length * 8;
 
     const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" height="20" width="${textWidth}">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="${textWidth}">
         <text id="likesText" x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
       </svg>
     `
@@ -80,7 +93,7 @@ app.post('*', async (c) => {
     const text = `500 Likes`
     const textWidth = text.length * 8;
     const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" height="20" width="${textWidth}">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="${textWidth}">
         <text id="likesText" x="50%" y="50%" font-family="sans-serif" dominant-baseline="middle" text-anchor="middle">${text}</text>
       </s
     `
