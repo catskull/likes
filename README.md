@@ -1,7 +1,7 @@
 # 👍 Likes
 A decentralized social network in a single HTML tag
 
-More info: https://likes.catskull.net
+More info: https://catskull.net/likes
 
 ## Development
  - Clone the repo
