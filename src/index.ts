@@ -9,6 +9,7 @@ const app = new Hono<{ Bindings: Bindings }>()
 
 app.get('*', async (c) => {
   if (new URL(c.req.url).pathname !== '/') return c.redirect('/', 307)
+  if (!c.req.header('Referer')) return c.redirect('https://catskull.net/likes', 307)
 
   c.header('Content-Type', 'image/svg+xml')
   c.header('Cache-control', 'no-cache')
