@@ -31,6 +31,8 @@ class Likes extends HTMLElement {
 			const likes = Number(await r.text())
 			if (this.likes !== likes) {
 				this.likes = likes
+				clearTimeout(this.timeout)
+				this.timeout = setTimeout(() => this.render(), 500)
 			}
 		});
 	}

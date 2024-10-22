@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 
 // This ensures c.env.DB is correctly typed
 type Bindings = {
@@ -6,6 +7,12 @@ type Bindings = {
 }
 
 const app = new Hono<{ Bindings: Bindings }>()
+
+app.use('/plain', cors({
+  origin: '*',
+  allowMethods: ['POST', 'GET'],
+  maxAge: 600,
+}))
 
 const retrieveLikes = async (source, c, increment = true) => {
   const stmt = c.env.DB.prepare("SELECT SourceLikes FROM Likes WHERE SourceName = ?")
