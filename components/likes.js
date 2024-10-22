@@ -41,7 +41,7 @@ class Likes extends HTMLElement {
 
 		const style = document.createElement('style')
 		style.innerHTML = `
-			page-likes a {
+			page-likes {
 				cursor: pointer;
 			}
 		`
