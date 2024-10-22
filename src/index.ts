@@ -7,6 +7,30 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>()
 
+const retrieveLikes = async (source, c, increment = true) => {
+  const stmt = c.env.DB.prepare("SELECT SourceLikes FROM Likes WHERE SourceName = ?")
+
+  const oldSource = c.req.header('Referer')?.replace(/\/+$/, '')
+  const oldLikes = await stmt.bind(oldSource).first('SourceLikes')
+
+  await c.env.DB.prepare("INSERT OR IGNORE INTO Likes (SourceName, SourceLikes) VALUES (?, ?)")
+    .bind(source, oldLikes + 1).run()
+
+  if (increment) {
+    await c.env.DB.prepare("INSERT OR REPLACE INTO Likes (SourceName, SourceLikes) VALUES (?, COALESCE((SELECT SourceLikes + 1 FROM Likes WHERE SourceName = ?), 2))")
+      .bind(source, source).run()
+  }
+
+  return await stmt.bind(source).first('SourceLikes')
+}
+
+app.get('/plain', async (c) => {
+  const u = new URL(c.req.header('Referer'))
+  const source = u.host + u.pathname
+  const likes = await retrieveLikes(source, c, false)
+  return c.text(likes)
+})
+
 app.get('*', async (c) => {
   if (new URL(c.req.url).pathname !== '/') return c.redirect('/', 307)
   if (!c.req.header('Referer')) return c.redirect('https://catskull.net/likes', 307)
@@ -49,6 +73,13 @@ app.get('*', async (c) => {
   c.header('Cache-control', 'no-cache')
   c.header('Access-Control-Allow-Origin', '*')
   return c.body(svg)
+})
+
+app.post('/plain', async (c) => {
+  const u = new URL(c.req.header('Referer'))
+  const source = u.host + u.pathname
+  const likes = await retrieveLikes(source, c)
+  return c.text(likes)
 })
 
 app.post('*', async (c) => {
