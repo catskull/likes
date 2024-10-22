@@ -4,6 +4,7 @@ A decentralized social network in a single HTML tag
 More info: https://catskull.net/likes
 
 ## Development
+### Worker
  - Clone the repo
  - `npm install`
  - `npx wrangler d1 create likes-dev`
@@ -18,6 +19,16 @@ database_id = "<unique-ID-for-your-database>"
  - `npx wrangler d1 execute likes-dev --local --file=./schema.sql`
 
 [Cloudflare D1 docs](https://developers.cloudflare.com/d1/)
+
+### Web Component
+ - Clone the repo
+ - `cd likes/components`
+ - `python3 -m http.server`
+ - `http://localhost:8000/likes.js`
+ - Use a different backend host (such as local) for replies backend (optional):
+ ```html
+ <page-replies host="http://localhost:8787"></page-replies>
+ ```
 
 ## Contributing
 The most helpful contribution is to use Likes and spread the word!
