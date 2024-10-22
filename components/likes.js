@@ -5,11 +5,16 @@ class Likes extends HTMLElement {
 		`
 	}
 
+	click() {
+		this.clicks += 1
+		this.fetchLikes()
+	}
+
 	fetchLikes() {
 		this.likes += 1
 		this.render()
 		if (this.initialized) {
-			this.innerText = "Liked!"
+			this.innerText = `+${this.clicks} Likes!`
 			setTimeout(() => this.render(), 500)
 		}
 		const method = this.initialized ? 'POST' : 'GET'
@@ -26,8 +31,9 @@ class Likes extends HTMLElement {
 
 	async connectedCallback() {
 		this.likes = 0
+		this.clicks = 0
 		this.host = this.getAttribute('host') || 'https://likes.catskull.net'
-		this.onclick = this.fetchLikes
+		this.onclick = this.click
 		this.onmouseenter = () => { this.innerText = '👍 Like?'}
 		this.onmouseleave = () => { this.render() }
 		this.initialized = false
