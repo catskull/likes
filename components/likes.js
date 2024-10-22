@@ -6,8 +6,14 @@ class Likes extends HTMLElement {
 	}
 
 	click() {
-		this.clicks += 1
-		this.fetchLikes()
+		if (this.clicks < 10) {
+			this.clicks += 1
+			this.fetchLikes()
+		} else {
+			this.innerText = `+${this.clicks} Likes!`
+			clearTimeout(this.timeout)
+			this.timeout = setTimeout(() => this.render(), 500)
+		}
 	}
 
 	fetchLikes() {
@@ -15,7 +21,8 @@ class Likes extends HTMLElement {
 		this.render()
 		if (this.initialized) {
 			this.innerText = `+${this.clicks} Likes!`
-			setTimeout(() => this.render(), 500)
+			clearTimeout(this.timeout)
+			this.timeout = setTimeout(() => this.render(), 500)
 		}
 		const method = this.initialized ? 'POST' : 'GET'
 		fetch(`${this.host}/plain`,
@@ -24,12 +31,12 @@ class Likes extends HTMLElement {
 			const likes = Number(await r.text())
 			if (this.likes !== likes) {
 				this.likes = likes
-				this.render()
 			}
 		});
 	}
 
 	async connectedCallback() {
+		this.timeout = undefined // reference to last timeout
 		this.likes = 0
 		this.clicks = 0
 		this.host = this.getAttribute('host') || 'https://likes.catskull.net'
@@ -43,6 +50,8 @@ class Likes extends HTMLElement {
 		style.innerHTML = `
 			page-likes {
 				cursor: pointer;
+			  -webkit-user-select: none;
+			  user-select: none;
 			}
 		`
 		
