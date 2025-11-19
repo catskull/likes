@@ -72,6 +72,15 @@ class Likes extends HTMLElement {
 			  user-select: none;
 			}
 		`
+
+		if (this.confetti) {
+			style.innerHTML += `
+				confetti-drop {
+				  position: fixed;
+				  inset: 0;
+				}
+			`
+		}
 		
 		document.body.appendChild(style)
 		this.initialized = true
