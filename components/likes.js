@@ -6,6 +6,10 @@ class Likes extends HTMLElement {
 	}
 
 	click() {
+		if (this.confetti) {
+			this.confettiElement.burst()
+		}
+
 		if (this.clicks < 10) {
 			this.clicks += 1
 			this.fetchLikes()
@@ -43,6 +47,18 @@ class Likes extends HTMLElement {
 		this.clicks = 0
 		this.host = this.getAttribute('host') || 'https://likes.catskull.net'
 		this.onclick = this.click
+		const confettiAttribute = this.hasAttribute("confetti") && this.getAttribute("confetti") !== "false"
+		const reduceMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches
+		if (confettiAttribute && !reduceMotion) {
+			this.confetti = true
+			const confettiScript = document.createElement('script')
+			confettiScript.src = 'https://catskull.net/public/js/components/confetti-drop.js'
+			confettiScript.type = 'module'
+			document.body.appendChild(confettiScript)
+			this.confettiElement = document.createElement('confetti-drop')
+			this.confettiElement.setAttribute('shapes', '👍')
+			document.body.appendChild(this.confettiElement)
+		}
 		this.onmouseenter = () => { this.innerText = '👍 Like?'}
 		this.onmouseleave = () => { this.render() }
 		this.initialized = false
